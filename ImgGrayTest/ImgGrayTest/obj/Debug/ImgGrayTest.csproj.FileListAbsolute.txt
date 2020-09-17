@@ -1,0 +1,12 @@
+D:\75吴南骏\ImgGrayTest\ImgGrayTest\bin\Debug\ImgGrayTest.exe.config
+D:\75吴南骏\ImgGrayTest\ImgGrayTest\bin\Debug\ImgGrayTest.exe
+D:\75吴南骏\ImgGrayTest\ImgGrayTest\bin\Debug\ImgGrayTest.pdb
+D:\75吴南骏\ImgGrayTest\ImgGrayTest\obj\Debug\ImgGrayTest.csprojResolveAssemblyReference.cache
+D:\75吴南骏\ImgGrayTest\ImgGrayTest\obj\Debug\ImgGrayTest.ImgGrayTest.resources
+D:\75吴南骏\ImgGrayTest\ImgGrayTest\obj\Debug\ImgGrayTest.Properties.Resources.resources
+D:\75吴南骏\ImgGrayTest\ImgGrayTest\obj\Debug\ImgGrayTest.csproj.GenerateResource.Cache
+D:\75吴南骏\ImgGrayTest\ImgGrayTest\obj\Debug\ImgGrayTest.exe
+D:\75吴南骏\ImgGrayTest\ImgGrayTest\obj\Debug\ImgGrayTest.pdb
+D:\Clone\ImgGrayTest\ImgGrayTest\bin\Debug\ImgGrayTest.exe.config
+D:\Clone\ImgGrayTest\ImgGrayTest\obj\Debug\ImgGrayTest.exe
+D:\Clone\ImgGrayTest\ImgGrayTest\obj\Debug\ImgGrayTest.pdb
