@@ -14,6 +14,7 @@ namespace ImgGrayTest
 {
     public partial class ImgGrayTest : Form
     {
+        private HiPerfTimer mytime;
         public ImgGrayTest()
         {
             InitializeComponent();
@@ -21,7 +22,7 @@ namespace ImgGrayTest
         }
         private string curFileName;
         private System.Drawing.Bitmap curBitmap;
-        private HiPerfTimer mytime;
+      
 
         //打开图像文件
         private void Open_Click(object sender, EventArgs e)
@@ -124,7 +125,7 @@ namespace ImgGrayTest
                 }
             }
             mytime.Stop();
-            textBox1.Text = mytime.Duration.ToString("####.##") + "毫秒";
+            timeBox.Text = mytime.Duration.ToString("####.##") + "毫秒";
             Invalidate(); //对窗体进行重新绘制，这将强行执行paint事件处理程序 
         }
         #endregion
@@ -163,7 +164,7 @@ namespace ImgGrayTest
                 
             }
             mytime.Stop();
-            textBox1.Text = mytime.Duration.ToString("####.##") + "毫秒";
+            timeBox.Text = mytime.Duration.ToString("####.##") + "毫秒";
             Invalidate(); //对窗体进行重新绘制，这将强行执行paint事件处理程序 
         }
         #endregion
@@ -207,47 +208,11 @@ namespace ImgGrayTest
 
             }
             mytime.Stop();
-            textBox1.Text = mytime.Duration.ToString("####.##") + "毫秒";
+            timeBox.Text = mytime.Duration.ToString("####.##") + "毫秒";
             Invalidate(); 
         }
         #endregion
     }
-    internal class HiPerfTimer
-    {
-        //引用Win32API中的QueryperformanceCounter()方法
-        //该查询方法以用来查询任意时刻高精度计时器的实际值
-        [DllImport("kernel32.dll")]
-        public extern static bool QueryPerformanceCounter(out long x);
-        [DllImport("kernel32.dll")]
-        public extern static bool QueryPerformanceFrequency(out long x);
-        private long startTime, stopTimer;
-        private long freq;
-        public HiPerfTimer()
-        {
-            startTime = 0;
-            stopTimer = 0;
-            if(QueryPerformanceFrequency(out freq) == false)
-            {
-                throw new Win32Exception();
-            }
-            
-        }
-        public void Start()
-        {
-            Thread.Sleep(0);
-            QueryPerformanceCounter(out startTime);
-        }
-        public void Stop()
-        {
-            QueryPerformanceCounter(out stopTimer);
-        }
-        public double Duration
-        {
-            get
-            {
-                return (double)(stopTimer - startTime) * 1000 / (double)freq;
-            }
-        }
-    }
+  
     
 }

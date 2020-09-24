@@ -34,7 +34,8 @@
             this.Pixel = new System.Windows.Forms.Button();
             this.Menory = new System.Windows.Forms.Button();
             this.pointer = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.timeBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // Open
@@ -97,19 +98,30 @@
             this.pointer.UseVisualStyleBackColor = true;
             this.pointer.Click += new System.EventHandler(this.pointer_Click);
             // 
-            // textBox1
+            // timeBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(37, 382);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 21);
-            this.textBox1.TabIndex = 6;
+            this.timeBox.Location = new System.Drawing.Point(37, 375);
+            this.timeBox.Name = "timeBox";
+            this.timeBox.Size = new System.Drawing.Size(100, 21);
+            this.timeBox.TabIndex = 6;
+            this.timeBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(37, 356);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(65, 12);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "运行时间：";
             // 
             // ImgGrayTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 562);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.timeBox);
             this.Controls.Add(this.pointer);
             this.Controls.Add(this.Menory);
             this.Controls.Add(this.Pixel);
@@ -132,7 +144,8 @@
         private System.Windows.Forms.Button Pixel;
         private System.Windows.Forms.Button Menory;
         private System.Windows.Forms.Button pointer;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox timeBox;
+        private System.Windows.Forms.Label label1;
     }
 }
 
