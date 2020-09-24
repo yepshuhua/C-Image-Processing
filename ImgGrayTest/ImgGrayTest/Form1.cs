@@ -24,9 +24,7 @@ namespace ImgGrayTest
             //创建openFileDialog
             OpenFileDialog opnlg = new OpenFileDialog();
             //为图像选择一个筛选器
-            opnlg.Filter = "所有图像｜*.bmp;*.pcx;*.png;*,jpg;*.gif;" + "*.tif;*.ico;*.dxf;*.cgm;*.cdr;*.wmf'*.eps;.emf|" +
-                "位图(*.bmp;*.jpg;*.png;...)|*.bmp;*.pcx;*.png;*.jpg;*.gif;*.tif;*.ico|" +
-                "矢量图（*.wmf;*.eps;*.emf;...)|*.dxf;*.cgm;*.cdr;*.wmf;*.eps;*.emf|";
+            opnlg.Filter = "所有图像｜*.bmp;*.pcx;*.png;*,jpg;*.gif;";
             //设置对话框标题
             opnlg.Title = "打开图像文件";
             //启动”帮助“按钮
@@ -99,16 +97,16 @@ namespace ImgGrayTest
         {
             this.Close();
         }
-
+        #region 提取像素法灰化图片
         private void Pixel_Click(object sender, EventArgs e)
         {
             if (curBitmap != null)
             {
                 Color curColor;
                 int ret;
-                for(int i = 0; i < curBitmap.Width; i++)//二维数组循环
+                for (int i = 0; i < curBitmap.Width/2; i++)//二维数组循环
                 {
-                    for(int j = 0; j < curBitmap.Height; j++)
+                    for (int j = 0; j < curBitmap.Height/2; j++)
                     {
                         curColor = curBitmap.GetPixel(i, j);//获取该点像素的RGB值
                         ret = (int)(curColor.R * 0.2229 + curColor.G * 0.587 + curColor.B * 0.114);//计算灰度值
@@ -118,7 +116,8 @@ namespace ImgGrayTest
             }
             Invalidate(); //对窗体进行重新绘制，这将强行执行paint事件处理程序 
         }
-
+        #endregion
+        #region 内存法灰化图片
         private void Menory_Click(object sender, EventArgs e)
         {
             if (curBitmap != null)
@@ -138,7 +137,60 @@ namespace ImgGrayTest
                 System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
                 //灰度化
                 double colorTemp = 0;
+                for (int i = 0; i < rgbValues.Length; i += 3)
+                {
+                    //利用公式计算灰度值
+                    colorTemp = rgbValues[i + 2] * 0.2229 + rgbValues[i + 1] * 0.587 + rgbValues[i] * 0.114;
+                    //R=G=B
+                    rgbValues[i] = rgbValues[i + 1] = rgbValues[i + 2] = (byte)colorTemp;
+                }
+                //把数组复制加位图
+                System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
+                //解锁位图像素
+                curBitmap.UnlockBits(bmpData);
+                Invalidate(); //对窗体进行重新绘制，这将强行执行paint事件处理程序 
             }
         }
+        #endregion
+        #region 指针法灰化航图片
+        private void pointer_Click(object sender, EventArgs e)
+        {
+            if (curBitmap != null)
+            {
+                //位图矩形
+                Rectangle rect = new Rectangle(0, 0, curBitmap.Width, curBitmap.Height);
+                //以可读写方式锁定全部位图像素
+                System.Drawing.Imaging.BitmapData bmpData = curBitmap.LockBits
+                    (rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, curBitmap.PixelFormat);
+                byte temp = 0;
+                //启动不安全模式
+                unsafe
+                {
+                    //获得首地址
+                    byte* ptr = (byte*)(bmpData.Scan0);
+                    //二维图像循环
+                    for (int i = 0; i < bmpData.Height; i++)
+                    {
+                        for (int j = 0; j < bmpData.Width; j++)
+                        {
+                            temp = (byte)(0.229 * ptr[2] + 0.587 * ptr[1] + 0.114 * ptr[0]);
+                            //R=G=B
+                            ptr[2] = ptr[1] = ptr[0] = temp;
+                            //指向下一个像素
+                            ptr += 3;
+                            //指向下一行数组的首个字节
+                            ptr += bmpData.Stride - bmpData.Width * 3;
+                        }
+                    }
+
+                    //解锁位图像素
+                    curBitmap.UnlockBits(bmpData);
+                    //对窗体进行重新绘制，这将强制执行Paint事件处理
+                    Invalidate();
+                }
+
+            }
+        }
+        #endregion
     }
 }

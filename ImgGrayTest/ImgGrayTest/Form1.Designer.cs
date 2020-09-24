@@ -94,6 +94,7 @@
             this.pointer.TabIndex = 5;
             this.pointer.Text = "指针法";
             this.pointer.UseVisualStyleBackColor = true;
+            this.pointer.Click += new System.EventHandler(this.pointer_Click);
             // 
             // ImgGrayTest
             // 
