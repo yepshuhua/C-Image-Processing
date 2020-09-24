@@ -4,7 +4,9 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -15,16 +17,21 @@ namespace ImgGrayTest
         public ImgGrayTest()
         {
             InitializeComponent();
+            mytime = new HiPerfTimer();
         }
         private string curFileName;
         private System.Drawing.Bitmap curBitmap;
+        private HiPerfTimer mytime;
+
         //打开图像文件
         private void Open_Click(object sender, EventArgs e)
         {
             //创建openFileDialog
             OpenFileDialog opnlg = new OpenFileDialog();
             //为图像选择一个筛选器
-            opnlg.Filter = "所有图像｜*.bmp;*.pcx;*.png;*,jpg;*.gif;";
+            opnlg.Filter = "所有图像｜*.bmp;*.pcx;*.png;*,jpg;*.gif;" + "*.tif;*.ico;*.dxf;*.cgm;*.cdr;*.wmf'*.eps;.emf|" +
+                "位图(*.bmp;*.jpg;*.png;...)|*.bmp;*.pcx;*.png;*.jpg;*.gif;*.tif;*.ico|" +
+                "矢量图（*.wmf;*.eps;*.emf;...)|*.dxf;*.cgm;*.cdr;*.wmf;*.eps;*.emf|";
             //设置对话框标题
             opnlg.Title = "打开图像文件";
             //启动”帮助“按钮
@@ -32,6 +39,7 @@ namespace ImgGrayTest
             //如果结果为打开，选定文件
             if (opnlg.ShowDialog() == DialogResult.OK)
             {
+
                 curFileName = opnlg.FileName;    //读取当前选中的文件名
                 //使用Image.fromFile创建图像对象
                 try
@@ -102,11 +110,12 @@ namespace ImgGrayTest
         {
             if (curBitmap != null)
             {
+                mytime.Start();
                 Color curColor;
                 int ret;
-                for (int i = 0; i < curBitmap.Width/2; i++)//二维数组循环
+                for (int i = 0; i < curBitmap.Width; i++)//二维数组循环
                 {
-                    for (int j = 0; j < curBitmap.Height/2; j++)
+                    for (int j = 0; j < curBitmap.Height; j++)
                     {
                         curColor = curBitmap.GetPixel(i, j);//获取该点像素的RGB值
                         ret = (int)(curColor.R * 0.2229 + curColor.G * 0.587 + curColor.B * 0.114);//计算灰度值
@@ -114,6 +123,8 @@ namespace ImgGrayTest
                     }
                 }
             }
+            mytime.Stop();
+            textBox1.Text = mytime.Duration.ToString("####.##") + "毫秒";
             Invalidate(); //对窗体进行重新绘制，这将强行执行paint事件处理程序 
         }
         #endregion
@@ -122,8 +133,9 @@ namespace ImgGrayTest
         {
             if (curBitmap != null)
             {
+                mytime.Start();
                 //位图矩形
-                Rectangle rect = new Rectangle(0, 0, curBitmap.Width, curBitmap.Height);
+                Rectangle rect = new Rectangle(0,0, curBitmap.Width, curBitmap.Height);
                 //以可读写方式锁定全部位图像素
                 System.Drawing.Imaging.BitmapData bmpData = curBitmap.LockBits
                     (rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, curBitmap.PixelFormat);
@@ -148,8 +160,11 @@ namespace ImgGrayTest
                 System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
                 //解锁位图像素
                 curBitmap.UnlockBits(bmpData);
-                Invalidate(); //对窗体进行重新绘制，这将强行执行paint事件处理程序 
+                
             }
+            mytime.Stop();
+            textBox1.Text = mytime.Duration.ToString("####.##") + "毫秒";
+            Invalidate(); //对窗体进行重新绘制，这将强行执行paint事件处理程序 
         }
         #endregion
         #region 指针法灰化航图片
@@ -157,6 +172,7 @@ namespace ImgGrayTest
         {
             if (curBitmap != null)
             {
+                mytime.Start();
                 //位图矩形
                 Rectangle rect = new Rectangle(0, 0, curBitmap.Width, curBitmap.Height);
                 //以可读写方式锁定全部位图像素
@@ -186,11 +202,52 @@ namespace ImgGrayTest
                     //解锁位图像素
                     curBitmap.UnlockBits(bmpData);
                     //对窗体进行重新绘制，这将强制执行Paint事件处理
-                    Invalidate();
+                    
                 }
 
             }
+            mytime.Stop();
+            textBox1.Text = mytime.Duration.ToString("####.##") + "毫秒";
+            Invalidate(); 
         }
         #endregion
     }
+    internal class HiPerfTimer
+    {
+        //引用Win32API中的QueryperformanceCounter()方法
+        //该查询方法以用来查询任意时刻高精度计时器的实际值
+        [DllImport("kernel32.dll")]
+        public extern static bool QueryPerformanceCounter(out long x);
+        [DllImport("kernel32.dll")]
+        public extern static bool QueryPerformanceFrequency(out long x);
+        private long startTime, stopTimer;
+        private long freq;
+        public HiPerfTimer()
+        {
+            startTime = 0;
+            stopTimer = 0;
+            if(QueryPerformanceFrequency(out freq) == false)
+            {
+                throw new Win32Exception();
+            }
+            
+        }
+        public void Start()
+        {
+            Thread.Sleep(0);
+            QueryPerformanceCounter(out startTime);
+        }
+        public void Stop()
+        {
+            QueryPerformanceCounter(out stopTimer);
+        }
+        public double Duration
+        {
+            get
+            {
+                return (double)(stopTimer - startTime) * 1000 / (double)freq;
+            }
+        }
+    }
+    
 }

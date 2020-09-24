@@ -34,6 +34,7 @@
             this.Pixel = new System.Windows.Forms.Button();
             this.Menory = new System.Windows.Forms.Button();
             this.pointer = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // Open
@@ -96,11 +97,19 @@
             this.pointer.UseVisualStyleBackColor = true;
             this.pointer.Click += new System.EventHandler(this.pointer_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(37, 382);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 21);
+            this.textBox1.TabIndex = 6;
+            // 
             // ImgGrayTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 562);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.pointer);
             this.Controls.Add(this.Menory);
             this.Controls.Add(this.Pixel);
@@ -111,6 +120,7 @@
             this.Text = "ImgGrayTest";
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.ImgGrayTest_Paint);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -122,6 +132,7 @@
         private System.Windows.Forms.Button Pixel;
         private System.Windows.Forms.Button Menory;
         private System.Windows.Forms.Button pointer;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
