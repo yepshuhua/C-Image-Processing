@@ -1,0 +1,12 @@
+D:\75吴南骏\HistTest\HistTest\HistTest\bin\Debug\HistTest.exe.config
+D:\Clone\HistTest\HistTest\bin\Debug\HistTest.exe.config
+D:\Clone\HistTest\HistTest\bin\Debug\HistTest.exe
+D:\Clone\HistTest\HistTest\bin\Debug\HistTest.pdb
+D:\Clone\HistTest\HistTest\obj\Debug\HistTest.csprojResolveAssemblyReference.cache
+D:\Clone\HistTest\HistTest\obj\Debug\HistTest.Form1.resources
+D:\Clone\HistTest\HistTest\obj\Debug\HistTest.histForm.resources
+D:\Clone\HistTest\HistTest\obj\Debug\HistTest.Properties.Resources.resources
+D:\Clone\HistTest\HistTest\obj\Debug\HistTest.csproj.GenerateResource.Cache
+D:\Clone\HistTest\HistTest\obj\Debug\HistTest.exe
+D:\Clone\HistTest\HistTest\obj\Debug\HistTest.pdb
+D:\Clone\HistTest\HistTest\obj\Debug\HistTest.linearPOForm.resources
