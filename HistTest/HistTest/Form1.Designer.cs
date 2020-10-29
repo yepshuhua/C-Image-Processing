@@ -34,6 +34,7 @@
             this.LinearPO = new System.Windows.Forms.Button();
             this.stretch = new System.Windows.Forms.Button();
             this.equalization = new System.Windows.Forms.Button();
+            this.shaping = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // Close
@@ -96,11 +97,22 @@
             this.equalization.UseVisualStyleBackColor = true;
             this.equalization.Click += new System.EventHandler(this.equalization_Click);
             // 
+            // shaping
+            // 
+            this.shaping.Location = new System.Drawing.Point(37, 334);
+            this.shaping.Name = "shaping";
+            this.shaping.Size = new System.Drawing.Size(75, 23);
+            this.shaping.TabIndex = 7;
+            this.shaping.Text = "直方图匹配";
+            this.shaping.UseVisualStyleBackColor = true;
+            this.shaping.Click += new System.EventHandler(this.shaping_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 562);
+            this.Controls.Add(this.shaping);
             this.Controls.Add(this.equalization);
             this.Controls.Add(this.stretch);
             this.Controls.Add(this.LinearPO);
@@ -122,6 +134,7 @@
         private System.Windows.Forms.Button LinearPO;
         private System.Windows.Forms.Button stretch;
         private System.Windows.Forms.Button equalization;
+        private System.Windows.Forms.Button shaping;
     }
 }
 

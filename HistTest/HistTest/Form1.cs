@@ -223,6 +223,97 @@ namespace HistTest
             }
 
         }
+
+        private void shaping_Click(object sender, EventArgs e)
+        {
+            if (curBitmap != null)
+            {
+                //实例化shapingForm窗体
+                shapingForm sForm = new shapingForm();
+                if (sForm.ShowDialog() == DialogResult.OK)
+                {
+                    Rectangle rect = new Rectangle(0, 0, curBitmap.Width, curBitmap.Height);
+                    System.Drawing.Imaging.BitmapData bmpData = curBitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, curBitmap.PixelFormat);
+                    IntPtr ptr = bmpData.Scan0;
+                    int bytes = curBitmap.Width * curBitmap.Height;
+                    byte[] grayValue = new byte[bytes];
+                    System.Runtime.InteropServices.Marshal.Copy(ptr, grayValue, 0, bytes);
+                    byte temp = 0;
+                    double[] PPixel = new double[256];
+                    double[] QPixel = new double[256];
+                    int[] qPixel = new int[256];
+                    int[] tempArray = new int[256];
+                    //计算原图像的各灰度级拿给个数
+                    for (int i = 0; i < grayValue.Length; i++)
+                    {
+                        temp = grayValue[i];
+                        //temp = (byte)(0.229 * grayValue[i + 2] + 0.587 * grayValue[i + 1] + 0.114 * grayValue[i]);
+                        //grayValue[i] = grayValue[i + 1] = grayValue[i + 2] = temp;
+                        qPixel[temp]++;
+                    }//计算该灰度级的累积分布函数
+                    for (int i = 0; i < 256; i++)
+                    {
+                        if (i != 0)
+                        {
+                            tempArray[i] = tempArray[i - 1] + qPixel[i];
+                        }
+                        else
+                        {
+                            tempArray[0] = qPixel[0];
+                        }
+                        QPixel[i] = (double)tempArray[i] / (double)bytes;
+                    }
+                    //得到被匹配的直方图的累积分布函数
+                    PPixel = sForm.ApplicationP;
+
+                    double diffA, diffB;
+                    byte k = 0;
+                    byte[] maxPixel = new byte[256];
+                    //直方图匹配
+                    for (int i = 0; i < 256; i++)
+                    {
+                        diffB = 1;
+                        for (int j = k; j < 256; j++)
+                        {
+                            //找到两个累计分布函数中最相似的位置
+                            diffA = Math.Abs(QPixel[i] - PPixel[j]);
+                            if (diffA - diffB < 1.0E-08)
+                            {
+                           //记下差值
+                                diffB = diffA;
+                                k = (byte)j;
+                            }
+                            else
+                            {
+                                //找到了，记录下位置，并退出内循环
+                                k = (byte)(j - 1);
+                                break;
+                            }
+                        }
+                        //达到最大灰度级，标识未处理灰度级，并退出外循环
+                        if (k == 255)
+                        {
+                            for (int l = i; l < 256; l++)
+                            {
+                                maxPixel[l] = k;
+                            }
+                            break;
+                        }
+                        //得到映射关系
+                        maxPixel[i] = k;
+                    }
+                    //灰度级映射处理
+                    for (int i = 0; i < bytes; i++)
+                    {
+                        temp = grayValue[i];
+                        grayValue[i] = maxPixel[temp];
+                    }
+                    System.Runtime.InteropServices.Marshal.Copy(grayValue, 0, ptr, bytes);
+                    curBitmap.UnlockBits(bmpData);
+                }
+                Invalidate();
+            }
+        }
     }
 }
 
