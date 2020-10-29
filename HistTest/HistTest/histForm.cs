@@ -78,7 +78,7 @@ namespace HistTest
             Rectangle rect = new Rectangle(0, 0, bmpHist.Width, bmpHist.Height);
             System.Drawing.Imaging.BitmapData bmpData = bmpHist.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite, bmpHist.PixelFormat);
             IntPtr ptr = bmpData.Scan0;
-            int bytes = bmpHist.Width * bmpHist.Height;
+            int bytes = bmpHist.Width * bmpHist.Height*3;
             byte[] grayValues = new byte[bytes];
             System.Runtime.InteropServices.Marshal.Copy(ptr, grayValues, 0, bytes);
 
@@ -87,7 +87,7 @@ namespace HistTest
             //灰度等级
             Array.Clear(countPixel, 0, 256);
             //计算各个灰度缘的像素个数，并实现找到灰度频率最大的像素
-            for (int i = 0; i < bytes; i++)
+            for (int i = 0; i < bytes; i+=3)
             {
                 //灰度级
                 temp = grayValues[i];
