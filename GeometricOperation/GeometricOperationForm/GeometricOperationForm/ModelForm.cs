@@ -91,19 +91,7 @@ namespace GeometricOperationForm
             Invalidate(); //对窗体进行重新绘制，这将强行执行paint事件处理程序 
         }
 
-        private void ImgGrayTest_Paint(object sender, PaintEventArgs e)
-        {
-            //获取Graphics对象
-            Graphics g = e.Graphics;
-            if (curBitmap != null)
-            {
-                //使用DrawImage方法绘制图像
-                //160，20：显示在主窗体内，图像左上角的坐标
-                //curBitmap.Width,curBitmap.Height:图像的宽度和高度
-                g.DrawImage(curBitmap, 160, 20, curBitmap.Width, curBitmap.Height);
-            }
 
-        }
 
         private void ModelForm_Paint(object sender, PaintEventArgs e)
         {

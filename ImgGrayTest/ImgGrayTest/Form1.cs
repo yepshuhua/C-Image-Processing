@@ -168,7 +168,7 @@ namespace ImgGrayTest
             Invalidate(); //对窗体进行重新绘制，这将强行执行paint事件处理程序 
         }
         #endregion
-        #region 指针法灰化航图片
+        #region 指针法灰化图片
         private void pointer_Click(object sender, EventArgs e)
         {
             if (curBitmap != null)
